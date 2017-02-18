@@ -56,6 +56,7 @@ $(function() {
       type: $f.attr("method"),
       data: $f.serialize(),
       success: function(event) {
+        // console.log(event); // Object {name: "Go home", month: "2", date: 1485993600000, notes: "", formatted_date: "2/30/17"…}
         Events.add(event);
       },
     });
