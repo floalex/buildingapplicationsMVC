@@ -49,3 +49,41 @@ function ModelConstructor(options) {
   return Model;
 }
 
+function CollectionConstructor(options) {
+  function Collection(model_constructor) {
+    this.models = [];
+    this.model = model_constructor;
+  }
+  
+  Collection.prototype = {
+    resetCollection: function() {
+      this.models = [];
+    },
+    add: function(model_attrs) {
+      var old_model = _(this.models).findWhere({id: model_attrs.id});
+      var new_model;
+      
+      if (old_model) { return old_model; }
+      
+      new_model = new this.model(model_attrs);
+      this.models.push(new_model);
+      
+      return new_model;
+    },
+    remove: function(model_attrs) {
+      model_attrs = _.isNumber(model_attrs) ? {id: model_attrs} : model_attrs;
+      
+      var model = _(this.models).findWhere(model_attrs);
+      
+      if(!model) { return; }
+      
+      var position = this.models.indexOf(model);
+      this.models.splice(position, 1);
+    },
+  };
+  
+   _.extend(Collection.prototype, options);
+  
+  return Collection;
+}
+
