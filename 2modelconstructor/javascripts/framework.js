@@ -80,6 +80,20 @@ function CollectionConstructor(options) {
       var position = this.models.indexOf(model);
       this.models.splice(position, 1);
     },
+    set: function(models) {
+      this.resetCollection();
+      models.forEach(this.add.bind(this));
+      // var self = this;
+      // models.forEach(function(model) {
+      //   self.add(model);
+      // });
+    },
+    get: function(id) {
+      return _(this.models).findWhere({ id: id });
+      // return this.models.filter(function(model) {
+      //   return model.id === id;
+      // })[0];
+    },
   };
   
    _.extend(Collection.prototype, options);

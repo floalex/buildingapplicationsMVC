@@ -32,14 +32,17 @@
 
     <script id="cars" type="text/x-handlebars">
       {{#each cars}}
-      <dl>
-        {{#with attributes}}
-        <dt>Make:</dt>
-        <dd>{{make}}</dd>
-        <dt>Model:</dt>
-        <dd>{{model}}</dd>
-        {{/with}}
-      </dl>
+      <li>
+        <dl>
+          {{#with attributes}}
+          <dt>Make:</dt>
+          <dd>{{make}}</dd>
+          <dt>Model:</dt>
+          <dd>{{model}}</dd>
+          {{/with}}
+        </dl>
+        <a data-id="{{id}}" href="#">Remove</a>
+      </li>
       {{/each}}
     </script>
 
