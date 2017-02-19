@@ -101,3 +101,29 @@ function CollectionConstructor(options) {
   return Collection;
 }
 
+function ViewConstructor(opts) {
+  function View(model) {
+    this.model = model;
+    // Add a pointer back to the view object-handy for later when changing the model
+    this.model.view = this;
+    this.$el = $("<" + this.tag_name + ">", this.attributes);
+    this.render();
+  }
+
+  View.prototype = {
+    tag_name: "div",
+    template: function() {},
+    attributes: {},
+    render: function() {
+      this.$el.html(this.template(this.model.attributes));
+    },
+    // remove the entire parent element using jQuery remove() method
+    remove: function() {
+      this.$el.remove();
+    },
+  };
+
+  _.extend(View.prototype, opts);
+
+  return View;
+}
