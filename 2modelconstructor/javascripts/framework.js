@@ -22,6 +22,7 @@ function ModelConstructor(options) {
   
   Model.prototype = {
     __events: [],
+    __remove: function() {},
     set: function(key, value) {
       this.attributes[key] = value;
       this.triggerChange();
@@ -77,6 +78,7 @@ function CollectionConstructor(options) {
       
       if(!model) { return; }
       
+      model.__remove();  // won't do anything if the model doesn't have a view
       var position = this.models.indexOf(model);
       this.models.splice(position, 1);
     },
@@ -104,8 +106,13 @@ function CollectionConstructor(options) {
 function ViewConstructor(opts) {
   function View(model) {
     this.model = model;
+    // Add a callback to the model so the model's view changes automatically when its data changes
+    this.model.addCallBack(this.render.bind(this));
+    // Make sure to remove the view when model got deleted by reassigning the model remove method
+    this.model.__remove = this.remove.bind(this);
     // Add a pointer back to the view object-handy for later when changing the model
     this.model.view = this;
+    this.attributes["data-id"] = this.model.id;
     this.$el = $("<" + this.tag_name + ">", this.attributes);
     this.render();
   }
@@ -114,12 +121,39 @@ function ViewConstructor(opts) {
     tag_name: "div",
     template: function() {},
     attributes: {},
+    events: {},
     render: function() {
+      // make sure when a view is re-rendered the events are not duplicated
+      this.unbindEvents();
       this.$el.html(this.template(this.model.attributes));
+      this.bindEvents();
+      // can be reached from outside of the app
+      return this.$el;
     },
     // remove the entire parent element using jQuery remove() method
     remove: function() {
+      this.unbindEvents();
       this.$el.remove();
+    },
+    bindEvents: function() {
+      var $el = this.$el;
+      var event, selector, parts;
+      
+      for (var prop in this.events) {
+        parts = prop.split(" ");
+        selector = parts.length > 1 ? parts.slice(1).join(" ") : undefined;
+        event = parts[0];
+        if (selector) {
+          $el.on(event + ".view", selector, this.events[prop].bind(this));
+        } 
+        else {
+          $el.on(event + ".view", this.events[prop].bind(this));
+        }
+      }
+    },
+    unbindEvents: function() {
+      // use the namespace ".view" to only unbind the events using viewConstructor
+      this.$el.off(".view");
     },
   };
 

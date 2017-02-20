@@ -1,8 +1,29 @@
+var edit_form = Handlebars.compile($("#edit").html());
 var Car = new ModelConstructor(); // console.log(Car); // function Model(attrs)
 var Cars = new CollectionConstructor(); // console.log(Cars); // function Collection(model_constructor)
 var CarView = new ViewConstructor({
       tag_name: "li",
       template: Handlebars.compile($("#cars").html()),
+      events: {
+        "dblclick": function() {
+          this.$el.append(edit_form(this.model.attributes));
+        },
+        // Click event will be bound to parent `$el` to listen for clicks on "form a" elements
+        // this.$el.on("click", "form a", function(e) { });
+        "click form a": function(e) {
+          e.preventDefault();
+          this.$el.find("form").remove();
+        },
+        // Submit event will be bound to the parent `$el` with no delegated element
+        // this.$el.on("submit", function(e) { });
+        "submit": function(e) {
+          e.preventDefault();
+          var vals = $(e.target).serializeArray();
+          this.model.set("make", vals[0].value);
+          this.model.set("model", vals[1].value);
+          this.$el.find("form").remove();
+        },
+      },
     });
 var $cars = $("ul");
 var inventory = new Cars(Car); // console.log(inventory); // Collection {models: Array[0], model: Model(attrs)}
