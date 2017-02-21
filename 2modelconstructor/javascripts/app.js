@@ -1,7 +1,7 @@
 var edit_form = Handlebars.compile($("#edit").html());
 var Car = new ModelConstructor(); // console.log(Car); // function Model(attrs)
 var Cars = new CollectionConstructor(); // console.log(Cars); // function Collection(model_constructor)
-var CarView = new ViewConstructor({
+var CarView = new ViewConstructor({ // console.log(CarView); // function View(model)
       tag_name: "li",
       template: Handlebars.compile($("#cars").html()),
       events: {

@@ -4,14 +4,13 @@ function ModelConstructor(options) {
   function Model(attrs) {
     id_count++;
     
-    var self = this;
     // we don't want to accidentally share the attributes between each instances
     // so don't put it in the prototype
-    self.attributes = attrs || {};
+    this.attributes = attrs || {};
     // this.id used to locate the model within a collection
     // this.attributes.id will be made available for public use and editing
-    self.id = id_count;
-    self.attributes.id = id_count;
+    this.id = id_count;
+    this.attributes.id = id_count;
     
     // prefixed with two underscores: this is a convention in the JavaScript to 
     // prefix properties and methods that are meant to be private 
@@ -124,7 +123,7 @@ function ViewConstructor(opts) {
     events: {},
     render: function() {
       // make sure when a view is re-rendered the events are not duplicated
-      // this.unbindEvents();
+      this.unbindEvents();
       this.$el.html(this.template(this.model.attributes));
       this.bindEvents();
       // can be reached from outside of the app
@@ -144,10 +143,10 @@ function ViewConstructor(opts) {
         selector = parts.length > 1 ? parts.slice(1).join(" ") : undefined;
         event = parts[0];
         if (selector) {
-          $el.on(event + ".view", selector, this.events[prop].bind(this));
+          $el.on(event + ".view", selector, this.events[prop]);
         } 
         else {
-          $el.on(event + ".view", this.events[prop].bind(this));
+          $el.on(event + ".view", this.events[prop]);
         }
       }
     },
