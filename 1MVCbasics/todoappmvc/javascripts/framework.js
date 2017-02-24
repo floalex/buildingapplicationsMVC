@@ -126,7 +126,7 @@ function ViewConstructor(opts) {
       this.unbindEvents();
       this.$el.html(this.template(this.model.attributes));
       this.bindEvents();
-      // can be reached from outside of the app
+      // can be reached from outside of the app; enables us to reuse the view as a sub-view
       return this.$el;
     },
     // remove the entire parent element using jQuery remove() method
