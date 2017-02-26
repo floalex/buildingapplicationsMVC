@@ -23,13 +23,15 @@ var ItemsCollection = Backbone.Collection.extend({
   incrementID: function() {
     this.last_id++;
   },
-  sortBy: function(prop) {
-    this.models = _(this.models).sortBy(function(m) {
-      return m.attributes[prop];
-    });
+  sortByProp: function(prop) {
+    this.comparator = prop;
+    this.sort();
+    // this.models = _(this.models).sortBy(function(m) {
+    //   return m.attributes[prop];
+    // });
     this.trigger("rerender");
   },
-  sortByName: function() { this.sortBy("name") },
+  sortByName: function() { this.sortByProp("name") },
   initialize: function() {
     this.on("add", this.sortByName);
   },
@@ -54,6 +56,7 @@ var ItemsView = Backbone.View.extend({
   initialize: function() {
     this.render();
     this.listenTo(this.collection, "remove reset rerender", this.render);
+    // this.listenTo(this.collection, "change", this.render); // won't work
   },
 });
 
@@ -75,7 +78,7 @@ $("form").on("submit", function(e) {
 
 $("th").on("click", function() {
   var prop = $(this).attr("data-prop");
-  App.Items.sortBy(prop);
+  App.Items.sortByProp(prop);
 });
 
 $("p a").on("click", function(e) {
