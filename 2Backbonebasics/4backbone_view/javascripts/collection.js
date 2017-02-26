@@ -1,20 +1,10 @@
 var App = {
-  $body: $("tbody"),
-  template: Handlebars.compile($("#items").html()),
-  removeItem: function(e) {
-    e.preventDefault();
-    var model = this.Items.get(Number($(e.target).attr("data-id")));
-    this.Items.remove(model);
-  },
-  bind: function() {
-    this.$body.on("click", "a", this.removeItem.bind(this));
-  },
   init: function() {
     // pass array of models on collection instantiation
     this.Items = new ItemsCollection(items_json);
+    this.View = new ItemsView({ collection: this.Items });
+    // console.log(this.View);
     this.Items.sortByName();
-    this.bind();
-    this.Items.render();
   },
 };
 
@@ -37,17 +27,33 @@ var ItemsCollection = Backbone.Collection.extend({
     this.models = _(this.models).sortBy(function(m) {
       return m.attributes[prop];
     });
-    this.render();
+    this.trigger("rerender");
   },
   sortByName: function() { this.sortBy("name") },
+  initialize: function() {
+    this.on("add", this.sortByName);
+  },
+});
+
+var ItemsView = Backbone.View.extend({
+  el: "tbody", 
+  events: {
+    "click a": "removeItem"
+  },
+  template: Handlebars.compile($("#items").html()),
   render: function() {
-    App.$body.html(App.template({
-      items: this.models
+    this.$el.html(this.template({
+      items: this.collection.toJSON()
     }));
   },
+  removeItem: function(e) {
+    e.preventDefault();
+    var model = this.collection.get(Number($(e.target).attr("data-id")));
+    this.collection.remove(model);
+  },
   initialize: function() {
-    this.on("remove reset", this.render);
-    this.on("add", this.sortByName);
+    this.render();
+    this.listenTo(this.collection, "remove reset rerender", this.render);
   },
 });
 
