@@ -38,6 +38,7 @@ var app = app || {};
       this.listenTo(app.Todos,'filter', this.filterAll);
       this.listenTo(app.Todos, 'all', this.render);
 
+      // The initialize() method completes by fetching the previously saved todos from localStorage.
       app.Todos.fetch();
     },
 
@@ -84,6 +85,7 @@ var app = app || {};
 
     // New
     filterOne : function (todo) {
+      // The affected todo is passed to the callback which triggers a custom visible event on the model.
       todo.trigger('visible');
     },
 

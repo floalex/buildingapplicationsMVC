@@ -7,6 +7,7 @@ var app = app || {};
   app.TodoView = Backbone.View.extend({
 
     //... is a list tag.
+    // an li element was implicitly created for us based on the tagName property
     tagName: 'li',
 
     // Cache the template function for a single item.
@@ -14,7 +15,9 @@ var app = app || {};
 
     // The DOM events specific to an item.
     events: {
+      'click .toggle': 'toggleCompleted',
       'dblclick label': 'edit',
+      'click .destroy': 'clear',
       'keypress .edit': 'updateOnEnter',
       'blur .edit': 'close'
     },
@@ -29,8 +32,31 @@ var app = app || {};
     // Re-renders the titles of the todo item.
     render: function() {
       this.$el.html( this.template( this.model.attributes ) );
+      
+      this.$el.toggleClass('completed', this.model.get('completed'));
+      this.toggleVisible;
+      
       this.$input = this.$('.edit');
       return this;
+    },
+    
+    // Toggles visibility of item
+    toggleVisible: function() {
+      this.$el.toggleClass('hidden', this.isHidden());
+    },
+    
+    // NEW - Determines if item should be hidden
+    isHidden: function() {
+      var isCompleted = this.model.get('completed');
+      return ( // hidden cases only
+        (!isCompleted && app.TodoFilter === 'completed')
+        || (isCompleted && app.TodoFilter === 'active')
+      );
+    },
+    
+    // Toggle the `"completed"` state of the model.
+    togglecompleted: function() {
+      this.model.toggle();
     },
 
     // Switch this view into `"editing"` mode, displaying the input field.
@@ -45,6 +71,8 @@ var app = app || {};
 
       if ( value ) {
         this.model.save({ title: value });
+      } else {
+        this.clear();
       }
 
       this.$el.removeClass('editing');
@@ -55,5 +83,10 @@ var app = app || {};
       if ( e.which === ENTER_KEY ) {
         this.close();
       }
-    }
+    },
+    
+    // Remove the item, destroy the model from *localStorage* and delete its view.
+    clear: function() {
+      this.model.destroy();
+    },
   });

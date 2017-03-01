@@ -31,7 +31,7 @@
     // GUID in the database. This generates the next order number for new items.
     nextOrder: function() {
       if ( !this.length ) {
-        return 1;
+        return 1;   // if no item in the list, set "order" to 1;
       }
       return this.last().get('order') + 1;
     },
