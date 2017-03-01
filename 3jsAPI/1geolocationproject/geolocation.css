@@ -1,0 +1,35 @@
+html, body {
+  margin: 0;
+  font: normal 16px Helvetica, Arial, sans-serif;
+  color: #333333;
+  background: #402a22;
+}
+
+main {
+  width: 600px;
+  padding: 25px;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+article {
+  position: relative;
+  height: 420px;
+  overflow: hidden;
+}
+
+#map img {
+  display: block;
+}
+
+#map p {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  margin: -10px 0 0 0;
+  text-align: center;
+}
+
+h2, h3, p {margin: 0}

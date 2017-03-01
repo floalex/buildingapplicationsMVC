@@ -14,7 +14,7 @@ var map = {
       src: this.buildURL(),
     });
     // document.body.innerHTML = $img.get(0);
-    $(document.body).html($img);
+    $("#map").html($img);
   },
   build: function(position) {
     this.position = position;
