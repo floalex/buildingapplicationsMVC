@@ -1,0 +1,113 @@
+@import url("whitespace-reset.css");
+
+/*still get the background in the bottom of the window*/
+html, body {
+  /*https://color.adobe.com/Color-Theme-4-color-theme-9300480/edit/?copy=true*/
+  background: #C17D8C;
+}
+
+body {
+  font: normal 14px "Roboto Condensed", sans-serif;
+}
+
+main {
+  max-width: 800px;
+  padding: 20px;
+  margin: 0 auto;
+  background: #f5f6d4;
+}
+
+h1 {
+  padding: 0 0 .6em 0;
+  font-size: 2.2em;
+  color: #493f0b;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+#albums li {
+  display: inline-block;
+  width: 25%;
+  padding: 0 10px 10px 0;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+
+#albums img {
+  display: block;
+  width: 100%;
+  margin: 0 0 10px 0;
+}
+
+#albums a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/*specify the id in backbone view instead of html*/
+#tracks_modal {
+  /*prevent it from popping up instead of fading*/
+  display: none;
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  bottom: 25px;
+  left: 25px;
+  padding: 25px;
+  z-index: 10;
+  background: #f5f6d4;
+}
+
+#tracks_modal img {
+  float: left;
+  width: 80px;
+  margin: 0 10px 10px 0;
+}
+
+#tracks_modal a.close {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  z-index: 1;
+  color: #a7c520;
+}
+
+#tracks_modal h2 {
+  padding: 0 0 10px 0;
+}
+
+#tracks_modal h3 {
+  padding: 0 0 5px 0;
+}
+
+#tracks_modal ol {
+  clear: both;
+  list-style: decimal inside;
+}
+
+#tracks_modal ol li {
+  padding: 7px 0;
+  border-top: 1px solid #a7c520;
+}
+
+#tracks_modal small {
+  float: right;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9;
+  background: rgba(0, 0, 0, .6);
+}
