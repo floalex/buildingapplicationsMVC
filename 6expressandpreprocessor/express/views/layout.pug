@@ -1,0 +1,41 @@
+include /_mixins
+include /_cart_mock
+include /_functions
+
+doctype html
+html
+  head
+    title Web Store
+    // link(rel='stylesheet', href='/stylesheets/application.css')
+    +stylesheet_link_tag('application')
+    link(href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css")
+  body
+    // be aware of whitespace control by Pug, can't put comment above "block content"
+    // header
+      // nav
+        // ul
+          // each link in links
+            // li
+              // a(href=`${link.href}` class=`${link.active ? 'active' : ''}`)= link.title
+    main
+      h1 Products
+      #cart
+        h3
+          a(href="#") 
+            // using pipe character is useful for mixing plain text with inline tags
+            | Cart
+            span= cart_quantity()
+        #items
+          ul
+            each cart_item in cart
+              li 
+                | #{cart_item.title} x #{cart_item.quantity}
+                span $#{format(cart_item.price * cart_item.quantity)}
+            li 
+              strong Total
+              span $#{format(cart.reduce(total))}
+          a(href="#") Checkout
+     
+    
+      block content
+    +javascript_include_tag("cart")

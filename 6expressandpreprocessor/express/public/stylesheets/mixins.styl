@@ -1,0 +1,31 @@
+fjalla = "Fjalla One", sans-serif
+
+colors = {
+  body: #333,
+  primary: yellow,
+  secondary: #01b0f0,
+  bg: #aeee00
+}
+
+logos = {
+  "&.snes": {
+    height: 44px
+  },
+  "&.ps2" : { 
+    height: 15px,
+    background-position: 0 -44px
+  },
+  "&.gc": { 
+    height: 73px,
+    background-position: 0 -59px
+  }
+}
+
+button(bg = colors.primary)
+  display: inline-block
+  padding: 8px 15px
+  font: normal 1.3em fjalla
+  text-decoration: none
+  color: #000;
+  border: 3px double colors.secondary
+  background: bg
