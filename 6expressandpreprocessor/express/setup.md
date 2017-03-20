@@ -18,11 +18,11 @@
 5. Install nib to enable using stylus
     - npm install -S nib
     - require both stylus and nib in app.js file
-      - var stylus = require("stylus");
-      - var nib = require("nib");
-      - app.use(stylus.middleware({
-          src: path.join(__dirname, "public"),
-          compile: function(str, p) {
-            return stylus(str).set("filename", p).use(nib());
-          }
-        }));
+      - `var stylus = require("stylus");`
+      - `var nib = require("nib");`
+      - `app.use(stylus.middleware({`
+          `src: path.join(__dirname, "public"),`
+          `compile: function(str, path) {`
+            `return stylus(str).set("filename", path).use(nib());`
+          `}`
+        `}));`

@@ -24,4 +24,4 @@
 
 6. Install Handlebars
   - run 'bower install -S handlebars'
-  - run 'grunt' to include handlebars
+  - run 'grunt' to include handlebars 
