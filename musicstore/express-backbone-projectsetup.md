@@ -57,14 +57,18 @@
     - Be sure to export the router at the end of the file
   - Create a get route for "/albums/new" and render the "new" view.
     - `router.get("/albums/new", function(req, res) { res.render("new")})`
-    - Include the albums route in "app.js"
+    - Include the albums route in "app.js"(will clean up in "all.js" next)
       - `app.use('/', albums);`
       - `var albums = require('./routes/albums');`
 * Create styles for the form.
   - Set form inputs to be 100% width and set their box-sizing to border-box. 
   - This ensures that they adjust to fit the width of the form element.
-* Add an albums route for post to "/albums".
-  - Read in req.body as the album data.
+  
+* Add an albums route for post to "/albums"
+  - Create "all.js" in "routes" file, and put the routes there
+    - Include express, router, path, etc. in "index.js" 
+    - Require each path file list
+    - Just require "all" in "app.js"
   - Clear out the existing JSON data in the albums.json file. Save the data to 
     a different file. It can be useful as source for sample starting data.
   - Convert the albums array to be a data property on a parent object. Add a 
@@ -74,7 +78,100 @@
         "last_id": 0,
         "data": []
       }
-  - Read in the last ID and use it to set the newly created album's ID.
-  - Increment last_id by 1 and add the new album object to the array of albums.
-  - Save the JSON file using the fs Node module and the writeFileSync method.
-  - Send back the JSON album object in the response.
+  - Create a post route, then store `album` as `req.body` in "albums.js"
+    - Set the newly created album's ID with `nextID()`
+    - Increment last_id by 1 and add the new album object to the array of albums.
+    - Save the JSON file using the `fs.writeFileSync` method, passing album.id and new album
+    - Respond the JSON album object in the response. 
+  - Attach `data` when return JSON in `getAlbums` in both "albums.js" and "index.js"
+
+#4. Add Album Node Module in "routes"
+* Refactor the album JSON manipulation code to a Node module.
+  - Create get and set methods:
+    - get will return the data property on the data being read in.
+    - set will get the current last_id and add 1, then write the albums array and 
+      the last_id to the JSON file.
+  - Create a getLastID method, which will simply return the last_id property.
+  - Replace the code in both routes with the new albums module method calls. To 
+    require the module, you'll need to use a similar method of building the relative 
+    path using the path module as you did with reading the JSON file in.
+
+* Create put and delete actions for the "/albums" route.
+  - put:
+    - Use the Underscore Node module to locate the current album based on an ID 
+      received from the request body.
+    - Overwrite properties from the request body on the current album.
+    - Save the albums data with the set method.
+    - Send the updated current album back as JSON using the response object.
+  - delete:
+    - Use the Underscore reject method to obtain all albums except the one with 
+      the ID from req.body.
+    - Save the albums data with the set method.
+    - Send a status code of 200, then end the response using res.status(200).end().
+
+#5. Beginning Backbone Development
+* Convert the view currently being rendered on the back end to a Handlebars template 
+  rendered by Backbone views.
+  - Create an App object in our application.js file.
+  - Create a new Album model and Albums collection using Backbone. Remember to 
+    organize your code into separate files and subdirectories to keep it easy to 
+    locate this code later on.
+  - Create a new Pug block in the layout named scripts that will allow per-page 
+    inclusion of JavaScript files and inline code.
+  - Within the index view, set App.albums to a new Albums collection, populated 
+    with the albums JSON data in the view. Use the scripts block to make sure 
+    this gets loaded at the bottom of the page. To do this will require a 
+    combination of a block of text within a tag and unescaped string interpolation.
+  - Create a Backbone AlbumView to render an album model. On initialize, call the 
+    render method.
+  - Convert the Pug template used to render albums to a Handlebars template for 
+    a single list item.
+  - Use Grunt Handlebars task to generate the JST file.
+  - Set the App.templates property to the JST object.
+  - Create a format_price Handlebars helper to format the price to two decimal places.
+  - On App.init, call a method to renderAlbums.
+    - Iterate over each album in the collection and create a new AlbumView.
+
+#6. Convert New Album View to Backbone Page
+* Create a Backbone view for NewAlbumView 
+  - Create a Handlebars template from the new album Pug view.
+  - In the render method, replace the contents of the page with the new album form.
+  - On submit, send the form via AJAX. The returned data is added to the collection 
+    so it gets rendered when the index view is rendered.
+* Create a Backbone router in a separate file to navigate between the index and 
+  new album routes.
+  - Specify a route for "albums/new" to call App.newAlbum.
+  - Specify a route in initialize using a regex for the index route (check for both 
+    root paths with and without a "/") to call this.index.
+  - Create the index method on router to call App.indexView.
+* Create a Backbone view for the IndexView.
+  - Create a Handlebars template for the index page.
+  - Create the App.indexView method, creating a new IndexView and rendering it. 
+  - Call renderAlbums after to repopulate the albums views.
+* Start the Backbone history listener, with the pushState option set to true.
+* Add a click event listener to the document that will use the Backbone router to 
+  navigate to wherever the path of the anchor points to.
+* Move the output of the albums JSON data from the index view to the layout to 
+  ensure the albums collection is created on entry page.
+* Reorganize your JavaScript includes:
+  - application, models, collections, views, App.albums creation, router
+* In the "albums/new" route, add the albums data output in the response.render call.
+
+#7. Adding a Cart
+* Create a sample, static cart view
+  - Create a header element with a #cart div in the Pug layout
+  - Create styles for the cart.
+* Create a Backbone collection constructor for CartItems. Do not set a model
+* Add a click event to the cart buttons
+* Create collection methods to calculate the cart total and quantity
+* Add a condition to addItem to check for an existing model based on the ID of the model passed in
+* Create a CartView constructor.
+* Add the "cart_updated" event trigger in the addItem method on the cart collection
+* Add a link to remove the model from the cart collection in the view.
+
+#8. Store and Retrieve Cart Data with localStorage
+* Create methods to read from storage and update storage.
+  - Read storage should parse the cart contents, then reset the collection with the data.
+  - Writing to storage will write the array returned from the toJSON call to localStorage.
+  - Call methods to update the total and quantity after reading data in.
+* Call the read storage method on collection initialize.

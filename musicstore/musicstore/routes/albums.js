@@ -1,15 +1,31 @@
 var path = require("path");
 var fs = require("fs");
-var express = require("express");
-var router = express.Router();
 var file_path = path.resolve(path.dirname(__dirname), "data/albums.json");
 
 function getAlbums() {
-  return JSON.parse(fs.readFileSync(file_path, "utf8"));
+  return JSON.parse(fs.readFileSync(file_path, "utf8")).data;
 }
 
-router.get("/albums/new", function(req, res) {
-  res.render("new");
-});
+function nextID() {
+  return JSON.parse(fs.readFileSync(file_path, "utf8")).last_id + 1;
+}
 
-module.exports = router;
+function writeAlbums(data) {
+  fs.writeFileSync(file_path, JSON.stringify(data), "utf8");
+}
+
+module.exports = function(router) {
+  router.post("/albums", function(req, res) {
+    var album = req.body;
+    var albums = getAlbums();
+    
+    album.id = nextID();
+    albums.push(album);
+    writeAlbums({ last_id: album.id, data: albums });
+    res.json(album);
+  });
+  
+  router.get("/albums/new", function(req, res) {
+    res.render("new");
+  });
+};
