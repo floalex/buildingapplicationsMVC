@@ -7,6 +7,22 @@ h1 {
   padding: 0 0 25px 0;
   font-size: 2em;
 }
+form dt {
+  padding: 0 0 5px 0;
+}
+form dd {
+  padding: 0 0 20px 0;
+}
+form input[type="text"],
+form input[type="date"],
+form input[type="url"] {
+  width: 100%;
+  height: 30px;
+  padding: 5px 8px;
+  border: 1px solid #888;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
 main {
   width: 800px;
   padding: 25px 40px;
@@ -41,7 +57,7 @@ ul li h3 {
   font-size: 1.25em;
 }
 a.button,
-input[style="submit"] {
+input[type="submit"] {
   position: relative;
   display: inline-block;
   padding: 10px 25px;
@@ -60,13 +76,13 @@ input[style="submit"] {
   box-shadow: 2px 2px 0 2px #008a73;
 }
 a.button:hover,
-input[style="submit"]:hover,
+input[type="submit"]:hover,
 a.button:focus,
-input[style="submit"]:focus {
+input[type="submit"]:focus {
   color: #ffff9d;
 }
 a.button:active,
-input[style="submit"]:active {
+input[type="submit"]:active {
   left: 2px;
   top: 2px;
   box-shadow: 1px 1px 0 1px #008a73;

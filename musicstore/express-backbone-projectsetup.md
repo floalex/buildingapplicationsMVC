@@ -20,7 +20,7 @@
 
 * Create an index route
   - Use the path and fs modules built-in to Node to read in albums from the JSON file
-    - To obtain the current root directory of your server, use path.resolve(path.dirname(__dirname))
+    - To obtain the current root directory of your server, use `path.resolve(path.dirname(__dirname))`
   - Put the code in 'index.js' file in "/routes"
   - Modify the get "/" route by passing the albums JSON as data to be used by the Pug view.
     - `res.render('index', { albums: getAlbums() });`
@@ -47,27 +47,34 @@
     - Move any CSS colors to a colors object in the mixins file, then change color 
       references to object properties on the colors object.
 
-* New Album Route and Form
-  - Create an albums route file.
-    - Create a get route for "/albums/new" and render the "new" view.
-  - Create a new album form in Pug.
-    - Add fields for all data properties.
-    - Style the submit button the same as the add to cart button.
-  - Create styles for the form.
-    - Set form inputs to be 100% width and set their box-sizing to border-box. 
-    - This ensures that they adjust to fit the width of the form element.
-  - Add an albums route for post to "/albums".
-    - Read in req.body as the album data.
-    - Clear out the existing JSON data in the albums.json file. Save the data to 
-      a different file. It can be useful as source for sample starting data.
-    - Convert the albums array to be a data property on a parent object. Add a 
-      last_id property to the parent object, set to 0 to start with. You should 
-      have something that looks like:
-        {
-          "last_id": 0,
-          "data": []
-        }
-    - Read in the last ID and use it to set the newly created album's ID.
-    - Increment last_id by 1 and add the new album object to the array of albums.
-    - Save the JSON file using the fs Node module and the writeFileSync method.
-    - Send back the JSON album object in the response.
+# 3. New Album Route and Form
+* Create a new album form in Pug.
+  - Add fields for all data properties.
+  - Style the submit button the same as the add to cart button.
+* Create an albums route file
+  - Create a new file "albums.js" in "routes"
+    - Get wire up by requiring path, fs, epxress module and router, and `path.resove`
+    - Be sure to export the router at the end of the file
+  - Create a get route for "/albums/new" and render the "new" view.
+    - `router.get("/albums/new", function(req, res) { res.render("new")})`
+    - Include the albums route in "app.js"
+      - `app.use('/', albums);`
+      - `var albums = require('./routes/albums');`
+* Create styles for the form.
+  - Set form inputs to be 100% width and set their box-sizing to border-box. 
+  - This ensures that they adjust to fit the width of the form element.
+* Add an albums route for post to "/albums".
+  - Read in req.body as the album data.
+  - Clear out the existing JSON data in the albums.json file. Save the data to 
+    a different file. It can be useful as source for sample starting data.
+  - Convert the albums array to be a data property on a parent object. Add a 
+    last_id property to the parent object, set to 0 to start with. You should 
+    have something that looks like:
+      {
+        "last_id": 0,
+        "data": []
+      }
+  - Read in the last ID and use it to set the newly created album's ID.
+  - Increment last_id by 1 and add the new album object to the array of albums.
+  - Save the JSON file using the fs Node module and the writeFileSync method.
+  - Send back the JSON album object in the response.

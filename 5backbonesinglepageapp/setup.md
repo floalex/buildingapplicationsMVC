@@ -13,6 +13,7 @@
     - test HTTP
       - npm install request -S
    - place jasmine-node into integration files
+   - `npm test` to run the tests
 
 5. Install and configuring Bower, Grunt, and the JS dependencies
    - npm install -S grunt grunt-contrib-uglify grunt-bower-concat
