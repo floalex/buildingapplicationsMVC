@@ -86,28 +86,14 @@
   - Attach `data` when return JSON in `getAlbums` in both "albums.js" and "index.js"
 
 #4. Add Album Node Module in "routes"
-* Refactor the album JSON manipulation code to a Node module.
+* Move the album JSON manipulation code to a Node module. Be sure to export module!
   - Create get and set methods:
-    - get will return the data property on the data being read in.
-    - set will get the current last_id and add 1, then write the albums array and 
-      the last_id to the JSON file.
+    - `get` will get the albums data
+    - `set` will set the next item's id, then write to the albums array
   - Create a getLastID method, which will simply return the last_id property.
   - Replace the code in both routes with the new albums module method calls. To 
     require the module, you'll need to use a similar method of building the relative 
     path using the path module as you did with reading the JSON file in.
-
-* Create put and delete actions for the "/albums" route.
-  - put:
-    - Use the Underscore Node module to locate the current album based on an ID 
-      received from the request body.
-    - Overwrite properties from the request body on the current album.
-    - Save the albums data with the set method.
-    - Send the updated current album back as JSON using the response object.
-  - delete:
-    - Use the Underscore reject method to obtain all albums except the one with 
-      the ID from req.body.
-    - Save the albums data with the set method.
-    - Send a status code of 200, then end the response using res.status(200).end().
 
 #5. Beginning Backbone Development
 * Convert the view currently being rendered on the back end to a Handlebars template 
