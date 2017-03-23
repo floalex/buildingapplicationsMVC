@@ -5,10 +5,9 @@ block content
   ul
     each album in albums
       li
-        img(src=`${album.cover}`)
-        h2= album.title
-        h3= album.artist
-        p= album.date
-        p $#{album.price}
-        a.button(href="#") Add to cart
+      
+block scripts
+  script(type="text/javascript").
+    App.albums = new Albums(!{JSON.stringify(albums)});
+    App.init();
         

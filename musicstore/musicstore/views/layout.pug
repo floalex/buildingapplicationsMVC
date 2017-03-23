@@ -3,9 +3,17 @@ include /_mixins
 doctype html
 html
   head
-    title= title
+    title= "Music Store"
     link(href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet")
     +stylesheet_link_tag('application')
+    +javascript_include_tag('vendor/all')
+    +javascript_include_tag('handlebars_templates')
   body
     main
       block content
+      
+    +javascript_include_tag('application')
+    +javascript_include_tag('models/album')
+    +javascript_include_tag('collections/albums')
+    +javascript_include_tag('views/album')
+    block scripts

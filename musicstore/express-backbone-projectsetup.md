@@ -14,9 +14,13 @@
   - `npm install -D grunt-contrib-handlebars grunt-contrib-watch`
   - Add 'Gruntfile.js' to the directory to set up grunt object and configure plugins
   - run `grunt` to make sure the plugins run
+  - Set up JSON data, put the dat file in "/data" 
 
-* Set up JSON data
-  - put the dat file in "/data" 
+* Install jasmine-node locally
+   - `npm install jasmine-node -S`
+    - test HTTP: `npm install request -S`
+   - place jasmine-node into integration files, add "test": "jasmine-node spec --autotest --color --watch ."
+   - Add routes spec, run `npm start` and `npm test` to run the tests
 
 * Create an index route
   - Use the path and fs modules built-in to Node to read in albums from the JSON file
@@ -95,28 +99,30 @@
     require the module, you'll need to use a similar method of building the relative 
     path using the path module as you did with reading the JSON file in.
 
-#5. Beginning Backbone Development
-* Convert the view currently being rendered on the back end to a Handlebars template 
-  rendered by Backbone views.
-  - Create an App object in our application.js file.
-  - Create a new Album model and Albums collection using Backbone. Remember to 
-    organize your code into separate files and subdirectories to keep it easy to 
-    locate this code later on.
-  - Create a new Pug block in the layout named scripts that will allow per-page 
-    inclusion of JavaScript files and inline code.
-  - Within the index view, set App.albums to a new Albums collection, populated 
-    with the albums JSON data in the view. Use the scripts block to make sure 
-    this gets loaded at the bottom of the page. To do this will require a 
-    combination of a block of text within a tag and unescaped string interpolation.
-  - Create a Backbone AlbumView to render an album model. On initialize, call the 
-    render method.
-  - Convert the Pug template used to render albums to a Handlebars template for 
-    a single list item.
-  - Use Grunt Handlebars task to generate the JST file.
-  - Set the App.templates property to the JST object.
+#5. Covert the views to Backbone and Handlebars
+* Create App object and the Backbone constructors
+  - Create a vanilla App object in "application.js" file.
+  - Create a new Album model, Album view and Albums collection using Backbone. 
+  - Add all javascript files in "layout.pug" in views with includ tag
+  - Create `block scripts` to allow per-page inclusion of JavaScript files and inline code.   
+  - Within the index view, set `App.albums` to a new Albums collection, populated 
+    with the albums JSON data in the view. This will reduce HTTP request and make 
+    the app faster. Use the scripts block to make sure this gets loaded at the bottom 
+    of the page. To do this will require a combination of a block of text within 
+    a tag and unescaped string interpolation.
+ - Create a Backbone AlbumView to render an album model. 
+
+* Convert the list item used to display an album into a Handlebars template and 
+  precompile it using the Grunt Handlebars plugin
+  - Create handlebars dir. Move the elements under `li` in "index" to "album.hbs"
+  - Set up handlebars configuration in "Gruntfile" to complile scripts into one file
+  - Run `grunt handlebars` to generate the JST file. Add the handlebars js file in "layout"
+  - Set the App.templates property to JST. This allows to access `App.templates.album`
+  - In `AlbumView`, add the template property with render and initialize method
   - Create a format_price Handlebars helper to format the price to two decimal places.
   - On App.init, call a method to renderAlbums.
     - Iterate over each album in the collection and create a new AlbumView.
+  - Init the App in "index.pug"
 
 #6. Convert New Album View to Backbone Page
 * Create a Backbone view for NewAlbumView 

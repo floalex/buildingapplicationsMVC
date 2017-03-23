@@ -10,9 +10,9 @@
 
 4. Install jasmine-node locally
    - npm install jasmine-node -S
-    - test HTTP
-      - npm install request -S
+    - test HTTP: `npm install request -S`
    - place jasmine-node into integration files
+   - Add `"test": "jasmine-node spec --autotest --color --watch ."` in "package.json"
    - `npm test` to run the tests
 
 5. Install and configuring Bower, Grunt, and the JS dependencies
