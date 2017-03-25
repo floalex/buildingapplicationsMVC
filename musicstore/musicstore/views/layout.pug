@@ -15,5 +15,8 @@ html
     +javascript_include_tag('application')
     +javascript_include_tag('models/album')
     +javascript_include_tag('collections/albums')
-    +javascript_include_tag('views/album')
+    +javascript_include_tag('views/album', 'views/new_album', 'views/index')
+    script(type="text/javascript").
+      App.albums = new Albums(!{JSON.stringify(albums)});
+    +javascript_include_tag('router')
     block scripts

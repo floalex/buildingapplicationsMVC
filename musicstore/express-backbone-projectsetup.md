@@ -19,7 +19,7 @@
 * Install jasmine-node locally
    - `npm install jasmine-node -S`
     - test HTTP: `npm install request -S`
-   - place jasmine-node into integration files, add "test": "jasmine-node spec --autotest --color --watch ."
+    - place jasmine-node into integration files, add "test": "jasmine-node spec --autotest --color --watch ."
    - Add routes spec, run `npm start` and `npm test` to run the tests
 
 * Create an index route
@@ -77,11 +77,8 @@
     a different file. It can be useful as source for sample starting data.
   - Convert the albums array to be a data property on a parent object. Add a 
     last_id property to the parent object, set to 0 to start with. You should 
-    have something that looks like:
-      {
-        "last_id": 0,
-        "data": []
-      }
+    have something that looks like in data/albums.json:
+      { "last_id": 0, "data": [...] }
   - Create a post route, then store `album` as `req.body` in "albums.js"
     - Set the newly created album's ID with `nextID()`
     - Increment last_id by 1 and add the new album object to the array of albums.
@@ -89,7 +86,7 @@
     - Respond the JSON album object in the response. 
   - Attach `data` when return JSON in `getAlbums` in both "albums.js" and "index.js"
 
-#4. Add Album Node Module in "routes"
+# 4. Add Album Node Module in "routes"
 * Move the album JSON manipulation code to a Node module. Be sure to export module!
   - Create get and set methods:
     - `get` will get the albums data
@@ -99,7 +96,20 @@
     require the module, you'll need to use a similar method of building the relative 
     path using the path module as you did with reading the JSON file in.
 
-#5. Covert the views to Backbone and Handlebars
+* Create put and delete actions for the "/albums" route.
+  - put:
+  Use the Underscore Node module to locate the current album based on an ID 
+  received from the request body.
+  Overwrite properties from the request body on the current album.
+  Save the albums data with the set method.
+  Send the updated current album back as JSON using the response object.
+  - delete:
+  Use the Underscore reject method to obtain all albums except the one with the 
+  ID from req.body.
+  Save the albums data with the set method.
+  Send a status code of 200, then end the response using res.status(200).end().
+
+# 5. Convert the views to Backbone and Handlebars
 * Create App object and the Backbone constructors
   - Create a vanilla App object in "application.js" file.
   - Create a new Album model, Album view and Albums collection using Backbone. 
@@ -124,32 +134,40 @@
     - Iterate over each album in the collection and create a new AlbumView.
   - Init the App in "index.pug"
 
-#6. Convert New Album View to Backbone Page
-* Create a Backbone view for NewAlbumView 
-  - Create a Handlebars template from the new album Pug view.
-  - In the render method, replace the contents of the page with the new album form.
+# 6. Convert New Album View to Backbone Page
+* Create a Backbone view for NewAlbumView, add the "add new album" button on the home page 
+  - Add attributes property, render and initialize method in "NewAlbumView"
+    - In the render method, replace the contents of the page with the new album form.
+  - Create "new_album.hbs" and place the form codes from pug here. Delete the form in pug. 
+    Don't forget to run `grunt handlebars` to complie the hbs file and include it in layout
   - On submit, send the form via AJAX. The returned data is added to the collection 
     so it gets rendered when the index view is rendered.
-* Create a Backbone router in a separate file to navigate between the index and 
-  new album routes.
+
+* Create Separate IndexView so we can render index page from Backbone
+  - Create a Handlebars template for the index page. Add attributes property in "IndexView"
+  - Add "click" event to add "addAlbum" method so clicking "Add new album" button 
+    can render new album page
+  - Create "bindEvents" in "App", extend Backbone.Events and listen to "indexView" there
+  - Create the App.indexView method, creating a new IndexView and rendering it. 
+  - Call renderAlbums in App.indexView after to repopulate the albums views.
+
+* Create a Backbone router to navigate between the index and new album routes
   - Specify a route for "albums/new" to call App.newAlbum.
   - Specify a route in initialize using a regex for the index route (check for both 
     root paths with and without a "/") to call this.index.
   - Create the index method on router to call App.indexView.
-* Create a Backbone view for the IndexView.
-  - Create a Handlebars template for the index page.
-  - Create the App.indexView method, creating a new IndexView and rendering it. 
-  - Call renderAlbums after to repopulate the albums views.
+  
 * Start the Backbone history listener, with the pushState option set to true.
 * Add a click event listener to the document that will use the Backbone router to 
-  navigate to wherever the path of the anchor points to.
+  navigate to wherever the path of the anchor points to. Trigger pushState by passing
+  `trigger: true` option in `router.navigate` method
 * Move the output of the albums JSON data from the index view to the layout to 
-  ensure the albums collection is created on entry page.
+  ensure the albums collection is created on entry page. No need to call `App.init` 
 * Reorganize your JavaScript includes:
   - application, models, collections, views, App.albums creation, router
 * In the "albums/new" route, add the albums data output in the response.render call.
 
-#7. Adding a Cart
+# 7. Adding a Cart
 * Create a sample, static cart view
   - Create a header element with a #cart div in the Pug layout
   - Create styles for the cart.
@@ -161,9 +179,11 @@
 * Add the "cart_updated" event trigger in the addItem method on the cart collection
 * Add a link to remove the model from the cart collection in the view.
 
-#8. Store and Retrieve Cart Data with localStorage
+# 8. Store and Retrieve Cart Data with localStorage
 * Create methods to read from storage and update storage.
   - Read storage should parse the cart contents, then reset the collection with the data.
   - Writing to storage will write the array returned from the toJSON call to localStorage.
   - Call methods to update the total and quantity after reading data in.
 * Call the read storage method on collection initialize.
+
+## Note: When ever you make changes on any ".hbs" file, be sure to run `grunt handlebars` 

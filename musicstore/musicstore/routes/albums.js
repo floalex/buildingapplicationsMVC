@@ -3,7 +3,9 @@ var path = require("path");
 var Albums = require(path.resolve(path.dirname(__dirname), "routes/albums_node"));
 
 module.exports = function(router) {
-  router.post("/albums", function(req, res) {
+  router.route("/albums").get(function(req, res) {
+    res.json(Albums.get());
+  }).post(function(req, res) {
     var album = req.body;
     var albums = Albums.get();
     
@@ -14,6 +16,8 @@ module.exports = function(router) {
   });
   
   router.get("/albums/new", function(req, res) {
-    res.render("new");
+    res.render("new", {
+      albums: Albums.get()
+    });
   });
 };

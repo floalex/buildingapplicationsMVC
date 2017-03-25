@@ -1,4 +1,5 @@
 var Albums = Backbone.Collection.extend({
   model: Album,
-  url: "/albums.json"
+  // Enable url "/albums/:id" for each Album's model
+  url: "/albums"
 });

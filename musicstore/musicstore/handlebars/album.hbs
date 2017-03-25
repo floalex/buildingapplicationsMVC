@@ -1,7 +1,11 @@
 <img src={{cover}}>
-<h2>{{title}}</h2>
-<h3>{{artist}}</h3>
-<p>{{date}}</p>
-<p>${{format_price price}}</p>
+<div class="description">
+  <h2>{{title}}</h2>
+  <h3>{{artist}}</h3>
+  <p>{{date}}</p>
+  <p>${{format_price price}}</p>
+</div>
 
 <a class="button" href="#">Add to cart</a>
+<a class="button edit" href="/albums/{{id}}/edit">Edit Album</a>
+<a class="button delete" href="/albums/{{id}}">Delete Album</a>
