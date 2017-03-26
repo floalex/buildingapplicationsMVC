@@ -100,12 +100,12 @@
   - put:
   Use the Underscore Node module to locate the current album based on an ID 
   received from the request body.
-  Overwrite properties from the request body on the current album.
+  Overwrite properties from the request body on the current album. (with _.extend)
   Save the albums data with the set method.
   Send the updated current album back as JSON using the response object.
   - delete:
   Use the Underscore reject method to obtain all albums except the one with the 
-  ID from req.body.
+  ID from req.params.
   Save the albums data with the set method.
   Send a status code of 200, then end the response using res.status(200).end().
 
@@ -166,6 +166,11 @@
 * Reorganize your JavaScript includes:
   - application, models, collections, views, App.albums creation, router
 * In the "albums/new" route, add the albums data output in the response.render call.
+
+* Add edit and delete button in index page. Create backbone views for both functions
+  - remember to pass in id to edit album method
+  - make sure the edit form method matched the backend method created previously
+  - implement "back" button with href=# for history.back() to work
 
 # 7. Adding a Cart
 * Create a sample, static cart view

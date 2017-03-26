@@ -17,6 +17,12 @@ var App = {
   newAlbum: function() {
     new NewAlbumView();
   },
+  editAlbum: function(id) {
+    var album = this.albums.find(function(album) {
+      return album.id === id;
+    });    
+    new EditAlbumView({ model: album });
+  },
   bindEvents: function() {
     _.extend(this, Backbone.Events);
     this.listenTo(this.index, "add_album", this.newAlbum);

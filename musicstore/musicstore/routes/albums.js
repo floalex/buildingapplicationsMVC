@@ -20,4 +20,34 @@ module.exports = function(router) {
       albums: Albums.get()
     });
   });
+  
+  router.get("/albums/:id/edit", function(req, res) {
+    res.render("edit", {
+      albums: Albums.get()
+    });
+  });
+  
+  router.route("/albums/:id").get(function(req, res) {
+    res.render("view", {
+      albums: Albums.get()
+    });
+  }).put(function(req, res) {
+    var albums = Albums.get();
+    var album_id = Number(req.params.id);
+    var current_album = _(albums).findWhere({ id: album_id });
+    
+    _.extend(current_album, req.body);
+    // need to set the id back otherwise the id will become string 
+    current_album.id = album_id;
+    Albums.set({ last_id: Albums.getLastID(), data: albums });
+    res.json(current_album);
+  }).delete(function(req, res) {
+    var albums = _(Albums.get()).reject(function(item) {
+      // need to pass params.id to successfully delete the item in JSON
+      return item.id === Number(req.params.id);
+    });
+    
+    Albums.set({ last_id: Albums.getLastID(), data: albums });
+    res.states(200).end();
+  });
 };

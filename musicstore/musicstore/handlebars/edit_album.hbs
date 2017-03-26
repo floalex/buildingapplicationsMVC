@@ -1,0 +1,42 @@
+<form action="/albums/{{id}}" method="put">
+  <h1>Edit Album</h1>
+  <fieldset>
+    <dl>
+      <dt>
+        <label for="title">Title</label>
+      </dt>
+      <dd>
+        <input id="title" type="text" name="title" value="{{title}}"/>
+      </dd>
+      <dt>
+        <label for="artist">Artist</label>
+      </dt>
+      <dd>
+        <input id="artist" type="text" name="artist" value="{{artist}}" />
+      </dd>
+      <dt>
+        <label for="date">Date</label>
+      </dt>
+      <dd>
+        <input id="date" type="date" name="date" value="{{date}}" />
+      </dd>
+      <dt>
+        <label for="cover">Cover</label>
+      </dt>
+      <dd>
+        <input id="cover" type="url" name="cover" value="{{cover}}" />
+      </dd>
+      <dt>
+        <label for="url">Price</label>
+      </dt>
+      <dd>
+        <input id="price" type="text" name="price" value="{{price}}" />
+      </dd>
+    </dl>
+    <input type="hidden" name="id" value="{{id}}" />
+  </fieldset>
+  <fieldset>
+    <input type="submit" value="Update" />
+    <a class="button back" href="#">Back</a>
+  </fieldset>
+</form>
