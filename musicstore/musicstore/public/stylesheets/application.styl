@@ -25,6 +25,7 @@ form
     box-sizing: border-box
 
 main
+  clear: both
   width: 800px
   padding: 25px 40px
   margin: 0 auto
@@ -57,4 +58,66 @@ main
 a.button, input[type="submit"]
   button()
 
+header
+  width: 800px
+  padding: 0 40px
+  margin: 0 auto
   
+#cart
+  position: relative
+  float: right
+  width: 50%
+  padding: 15px 0 0 0
+  text-align: right
+  label
+    display: inline-block
+    padding: 2px 3px
+    cursor: pointer
+  input
+    display: none
+    &:checked
+      + #items // items come immediately after checked
+        display: block
+  #items
+    display: none
+    position: absolute
+    top: 100%
+    right: 0 
+    z-index: 1
+    padding: 5px 10px
+    color: colors.button.text
+    background: colors.button.bg
+    li
+      padding: 5px 0
+      font-size: 12px
+      text-align: left
+    small
+      float: right
+      margin: 0 0 0 10px
+      font-size: 11px
+    a
+      float: left
+      position: relative  // so that we can draw the line
+      width: 12px
+      height: 12px
+      margin: 0 5px 0 0
+      overflow: hidden
+      text-indent: 9999px
+      transform: rotate(45deg)  // make an "x" from "+"
+      &:before,
+      &:after
+        position: absolute
+        content: ""
+        background: colors.delete
+      &:before
+        top: 0
+        bottom: 0
+        left: 50%
+        margin-left: -1px
+        width: 2px
+      &:after
+        top: 50%
+        right: 0
+        left: 0
+        height: 2px
+        margin-top: -1px

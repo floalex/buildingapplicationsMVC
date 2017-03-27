@@ -24,6 +24,7 @@ form input[type="url"] {
   box-sizing: border-box;
 }
 main {
+  clear: both;
   width: 800px;
   padding: 25px 40px;
   margin: 0 auto;
@@ -91,4 +92,77 @@ input[type="submit"]:active {
   left: 2px;
   top: 2px;
   box-shadow: 1px 1px 0 1px #008a73;
+}
+header {
+  width: 800px;
+  padding: 0 40px;
+  margin: 0 auto;
+}
+#cart {
+  position: relative;
+  float: right;
+  width: 50%;
+  padding: 15px 0 0 0;
+  text-align: right;
+}
+#cart label {
+  display: inline-block;
+  padding: 2px 3px;
+  cursor: pointer;
+}
+#cart input {
+  display: none;
+}
+#cart input:checked + #items {
+  display: block;
+}
+#cart #items {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1;
+  padding: 5px 10px;
+  color: #fff;
+  background: #00a388;
+}
+#cart #items li {
+  padding: 5px 0;
+  font-size: 12px;
+  text-align: left;
+}
+#cart #items small {
+  float: right;
+  margin: 0 0 0 10px;
+  font-size: 11px;
+}
+#cart #items a {
+  float: left;
+  position: relative;
+  width: 12px;
+  height: 12px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  text-indent: 9999px;
+  transform: rotate(45deg);
+}
+#cart #items a:before,
+#cart #items a:after {
+  position: absolute;
+  content: "";
+  background: #b00b00;
+}
+#cart #items a:before {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -1px;
+  width: 2px;
+}
+#cart #items a:after {
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 2px;
+  margin-top: -1px;
 }
