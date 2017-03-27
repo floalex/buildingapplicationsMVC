@@ -172,7 +172,7 @@
   - make sure the edit form method matched the backend method created previously
   - implement "back" button with href=# for history.back() to work
 
-# 7. Adding a Cart
+# 7. Adding a Cart: Clone the album model and pass that in Cart collection
 * Create a sample, static cart view
   - Create a header element with a #cart div in the Pug layout
   - Create styles for the cart.
@@ -192,3 +192,5 @@
 * Call the read storage method on collection initialize.
 
 ## Note: When ever you make changes on any ".hbs" file, be sure to run `grunt handlebars` 
+
+## Jade/pug to html converter: [https://www.beautifyconverter.com/jade-to-html-converter.php]

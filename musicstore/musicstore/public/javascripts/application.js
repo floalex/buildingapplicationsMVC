@@ -4,6 +4,7 @@ var App = {
   indexView: function() {
     this.index = new IndexView();
     this.renderAlbums();
+    this.createCart();
     this.bindEvents();
   },
   renderAlbums: function() {
@@ -23,9 +24,16 @@ var App = {
     });    
     new EditAlbumView({ model: album });
   },
+  createCart: function() {
+    this.cart = new CartItems();
+    this.cart.view = new CartView({
+      collection: this.cart
+    });
+  },
   bindEvents: function() {
     _.extend(this, Backbone.Events);
     this.listenTo(this.index, "add_album", this.newAlbum);
+    this.on("add_to_cart", this.cart.addItem.bind(this.cart));
   },
 };
 

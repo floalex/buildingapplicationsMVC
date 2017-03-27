@@ -4,6 +4,7 @@ var AlbumView = Backbone.View.extend({
   events: {
     "click a.delete": "deleteAlbum",
     "click a.edit": "updateAlbum",
+    "click a.button": "addToCart"
   },
   updateAlbum: function(e) {
     e.preventDefault();
@@ -17,6 +18,11 @@ var AlbumView = Backbone.View.extend({
     if (!answer) { return; }
  
     this.model.destroy();
+  },
+  addToCart: function(e) {
+    e.preventDefault();
+    // sends the model to the cart collection
+    App.trigger("add_to_cart", this.model);
   },
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));

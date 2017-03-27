@@ -10,28 +10,15 @@ html
     +javascript_include_tag('handlebars_templates')
   body
     header
-      #cart
-        label(for="cart_toggle") 2 items
-        input#cart_toggle(type="checkbox")
-        #items
-          ul
-            li
-              a(href="#") Remove
-              Album Name x 1
-              small $19.00
-            li
-              a(href="#") Remove
-              Really Long Album Name x 2
-              small $10.99
-          p $50.00
+      #cart      
       
     main
       block content
       
     +javascript_include_tag('application')
     +javascript_include_tag('models/album')
-    +javascript_include_tag('collections/albums')
-    +javascript_include_tag('views/album', 'views/new_album', 'views/index', 'views/edit_album')
+    +javascript_include_tag('collections/albums', 'collections/cart_items')
+    +javascript_include_tag('views/album', 'views/new_album', 'views/index', 'views/edit_album', 'views/cart')
     script(type="text/javascript").
       App.albums = new Albums(!{JSON.stringify(albums)});
     +javascript_include_tag('router')
