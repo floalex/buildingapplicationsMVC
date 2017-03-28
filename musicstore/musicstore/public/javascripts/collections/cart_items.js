@@ -15,6 +15,15 @@ var CartItems = Backbone.Collection.extend({
     return this;
   },
   getQuantity: function() { return this.quantity; },
+  readStorage: function() {
+    var stored_cart = JSON.parse(localStorage.getItem("cart"));
+    // reset the cart collection with the stored_cart data
+    this.reset(stored_cart);
+    this.setTotal().setQuantity();
+  },
+  updateStorage: function() {
+    localStorage.setItem("cart", JSON.stringify(this.toJSON()));
+  },
   addItem: function(item) {
     // check if the item already existed, get the item if the id existed
     var existing = this.get(item.get("id"));
@@ -27,15 +36,19 @@ var CartItems = Backbone.Collection.extend({
       existing.set("quantity", 1);
       this.add(existing);
     }
-    this.setTotal().setQuantity();
+    this.update();
     this.trigger("cart_updated");
   },
   destroy: function(id) {
     // don't call remove on collection as we need to update total and quantity
     this.remove(id);
-    this.setTotal().setQuantity();
+    this.update();
+  },
+  update: function() {
+    this.setTotal().setQuantity().updateStorage();
   },
   initialize: function() {
+    this.readStorage();
     this.on("destroy", this.destroy);
   }
 });
